@@ -32,12 +32,23 @@ public class Voiture {
                     Stationnement s = new Stationnement(this, g);
                     myStationnements.add(s);
                 }
-                int taille =myStationnements.size();
-                Stationnement st= myStationnements.get(taille-1);
-                if(taille==0 || st.getFin()==null){
-                    throw new java.lang.Exception("La voiture est déja dans un garage");
+                else{
+                    int taille =myStationnements.size();
+                    Stationnement st= myStationnements.get(taille-1);
+                        if(st.getFin()==null){
+                            throw new java.lang.Exception("La voiture est déja dans un garage");
+                        }
+                        else{
+                            Stationnement s1 = new Stationnement(this, g);
+                            myStationnements.add(s1);
+                        }
+                    }
                 }
-	}
+
+                
+                
+                
+
 
 	/**
 	 * Fait sortir la voiture du garage 
@@ -63,23 +74,36 @@ public class Voiture {
 	 */
 	public Set<Garage> garagesVisites() {
             Set<Garage> listeGarage = new HashSet();
-            for(Stationnement s : myStationnements){
-                listeGarage.add(s.getGarage());
+            if(myStationnements.isEmpty()){
+                return listeGarage;
             }
-            return listeGarage;
+            else{
+            
+                for(Stationnement s : myStationnements){
+                    listeGarage.add(s.getGarage());
+                }
+                return listeGarage;
+            }
 	}
 
 	/**
 	 * @return vrai si la voiture est dans un garage, faux sinon
 	 */
 	public boolean estDansUnGarage() {
-            int taille =myStationnements.size();
-            Stationnement st= myStationnements.get(taille-1);
-            if(st.getFin()==null){
-                    return true;
+            if(myStationnements.isEmpty()){
+                return false;
             }
-            return false;	
-	}
+            else{
+                int taille =myStationnements.size();
+                Stationnement st= myStationnements.get(taille-1);
+                if(st.getFin()==null){
+                    return true;
+                }
+                return false;
+            }
+        }
+           
+
 
 	/**
 	 * Pour chaque garage visité, imprime le nom de ce garage suivi de la liste des dates d'entrée / sortie dans ce
@@ -98,9 +122,10 @@ public class Voiture {
 	public void imprimeStationnements(PrintStream out) {
             Set<Garage> Gset=this.garagesVisites();
             for(Garage g : Gset){
-               System.out.println("Garage "+g);
+               out.println(g.toString());
                for(Stationnement s : myStationnements){
-                   s.toString();
+                   if(s.getGarage()== g)
+                   out.println(s.toString());
                }   
             }
 	}
